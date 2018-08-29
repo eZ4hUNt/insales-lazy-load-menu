@@ -1,0 +1,128 @@
+{% assign level_limit = level_limit | default: 100 %}
+{% assign links_limit = links_limit | default: 100 %}
+{% assign show_icon = show_icon | default: false %}
+
+{% assign start_time = 'now' | date: '%s.%L' %}
+
+{% capture cache_menu_key %}cache_menu_key_{{ collections.last_updated_at }}_{{ menu_class }}_{{ level_limit }}_{{ links_limit }}_{{ show_icon }}_{{ source_type}}_{{ source_handle }}_{{ languge.local_ }}_{{ collection.handle }}_1{% endcapture %}
+
+{% if source_type == 'collection' %}
+	{% cache cache_menu_key %}
+      <ul class="{{ menu_class }} insales-menu--loaded is-vertical menu level-1" data-menu-id="{{ menu_class }}">
+        {% for link in collections %}
+          {% comment %}
+            LEVEL_1
+          {% endcomment %}
+          <li class="{{ menu_class }}-item menu-item">
+            <div class="{{ menu_class }}-item-controls menu-item-controls{% if  link.handle == collection.handle or link.current? %} opened {% endif %}">
+              {% if show_icon %}
+                <span class="{{ menu_class }}-icon menu-icon"></span>
+              {% endif %}
+
+              <a href="{{ link.url }}" class="{{ menu_class }}-link menu-link" data-menu-link="{{ link.url | split: '/' | last }}" data-menu-link-source="article">
+                {{ link.title }}
+              </a>
+              {% if link.subcollections.size > 0 %}<button class="sidebar-menu-marker menu-marker js-show-subcollections level-1{% if  link.handle == collection.handle or link.current? %} opened{% endif %}" type="button"></button>{% endif %}
+            </div>
+            {% comment %}
+              LEVEL_2
+            {% endcomment %}
+            {% if link.subcollections.size > 0 %}
+              <ul class="{{ menu_class }} insales-menu--loaded is-vertical menu level-2{% if link.handle == collection.handle or link.current? %} opened{% endif %}" data-menu-id="{{ menu_class }}">
+                {% if link.current? %}
+                  {% for link_lvl_2 in link.subcollections  %}
+                    <li class="{{ menu_class }}-item menu-item">
+                      <div class="{{ menu_class }}-item-controls menu-item-controls{% if link_lvl_2.current? %} opened active{% endif %}">
+                        {% if show_icon %}
+                          <span class="{{ menu_class }}-icon menu-icon"></span>
+                        {% endif %}
+
+                        <a href="{{ link_lvl_2.url }}" class="{{ menu_class }}-link menu-link" data-menu-link="{{ link_lvl_2.url | split: '/' | last }}" data-menu-link-source="article">
+                          {{ link_lvl_2.title }}
+                        </a>
+                        {% if link_lvl_2.subcollections.size > 0 %}<button class="sidebar-menu-marker menu-marker js-show-subcollections level-2{% if link_lvl_2.current? %} opened{% endif %}" type="button"></button>{% endif %}
+                      </div>
+                      {% comment %}
+                        LEVEL_3
+                      {% endcomment %}
+                      {% if link_lvl_2.subcollections.size > 0 %}
+                        <ul class="{{ menu_class }} insales-menu--loaded is-vertical menu level-3{% if link_lvl_2.current? %} opened{% endif %}" data-menu-id="{{ menu_class }}">
+                          {% if link_lvl_2.current? %}
+                            {% for link_lvl_3 in link_lvl_2.subcollections %}
+                              <li class="{{ menu_class }}-item menu-item">
+                                <div class="{{ menu_class }}-item-controls menu-item-controls{% if link_lvl_3.current? %} opened active{% endif %}">
+                                  {% if show_icon %}
+                                    <span class="{{ menu_class }}-icon menu-icon"></span>
+                                  {% endif %}
+
+                                  <a href="{{ link_lvl_3.url }}" class="{{ menu_class }}-link menu-link" data-menu-link="{{ link_lvl_3.url | split: '/' | last }}" data-menu-link-source="article">
+                                    {{ link_lvl_3.title }}
+                                  </a>
+                                  {% if link_lvl_3.subcollections.size > 0 %}<button class="sidebar-menu-marker menu-marker js-show-subcollections level-3{% if link_lvl_3.current? %} opened{% endif %}" type="button"></button>{% endif %}
+                                </div>
+                                {% comment %}
+                                  LEVEL_4
+                                {% endcomment %}
+                                {% if link_lvl_3.subcollections.size > 0 %}
+                                  <ul class="{{ menu_class }} insales-menu--loaded is-vertical menu level-4{% if link_lvl_3.current? %} opened{% endif %}" data-menu-id="{{ menu_class }}">
+                                    {% if link_lvl_3.current? %}
+                                      {% for link_lvl_4 in link_lvl_3.subcollections  %}
+                                        <li class="{{ menu_class }}-item menu-item">
+                                          <div class="{{ menu_class }}-item-controls menu-item-controls {% if link_lvl_4.current? %} opened active{% endif %}">
+                                            {% if show_icon %}
+                                              <span class="{{ menu_class }}-icon menu-icon"></span>
+                                            {% endif %}
+
+                                            <a href="{{ link_lvl_4.url }}" class="{{ menu_class }}-link menu-link" data-menu-link="{{ link_lvl_4.url | split: '/' | last }}" data-menu-link-source="article">
+                                              {{ link_lvl_4.title }}
+                                            </a>
+                                            {% if link_lvl_4.subcollections.size > 0 %}<button class="sidebar-menu-marker menu-marker js-show-subcollections level-4{% if link_lvl_4.current? %} opened{% endif %}" type="button"></button>{% endif %}
+                                          </div>
+                                          {% comment %}
+                                            LEVEL_5
+                                          {% endcomment %}
+                                          {% if link_lvl_4.subcollections.size > 0 %}
+                                            <ul class="{{ menu_class }} insales-menu--loaded is-vertical menu level-5{% if link_lvl_4.current? %} opened{% endif %}" data-menu-id="{{ menu_class }}">
+                                              {% if link_lvl_4.current? %}
+                                                {% for link_lvl_5 in link_lvl_4.subcollections  %}
+                                                  <li class="{{ menu_class }}-item menu-item">
+                                                    <div class="{{ menu_class }}-item-controls menu-item-controls{% if link_lvl_5.current? %} opened active{% endif %}">
+                                                      {% if show_icon %}
+                                                        <span class="{{ menu_class }}-icon menu-icon"></span>
+                                                      {% endif %}
+
+                                                      <a href="{{ link_lvl_5.url }}" class="{{ menu_class }}-link menu-link" data-menu-link="{{ link_lvl_5.url | split: '/' | last }}" data-menu-link-source="article">
+                                                        {{ link_lvl_5.title }}
+                                                      </a>
+                                                      {% if link_lvl_5.subcollections.size > 0 %}<button class="sidebar-menu-marker menu-marker js-show-subcollections level-5{% if link_lvl_5.current? %} opened{% endif %}" type="button"></button>{% endif %}
+                                                    </div>
+                                                    {% if link_lvl_5.subcollections.size > 0 %}
+                                                      <ul class="{{ menu_class }} insales-menu--loaded is-vertical menu level-6{% if link_lvl_5.current? %} opened{% endif %}" data-menu-id="{{ menu_class }}">
+
+                                                      </ul>
+                                                    {% endif %}
+                                                  </li>
+                                                {% endfor %}
+                                              {% endif %}
+                                            </ul>
+                                          {% endif %}
+                                        </li>
+                                      {% endfor %}
+                                    {% endif %}
+                                  </ul>
+                                {% endif %}
+                              </li>
+                            {% endfor %}
+                          {% endif %}
+                        </ul>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                {% endif %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+	{% endcache %}
+{% endif %}
